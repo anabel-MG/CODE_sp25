@@ -1,0 +1,105 @@
+@font-face {
+  font-family: Mousey;
+  src: url(mousie.regular.ttf);
+}
+
+@font-face {
+  font-family: cdr;
+  src: url(choco-donut.regular.ttf);
+}
+
+body {
+  padding: 50px ;
+    margin: 10;
+  
+}
+
+main {
+    padding-top: 40px;
+}
+
+a {
+  color:#3d9fff;
+}
+
+a:hover {
+  color:#1e5f9e;
+}
+u{   color: #81cce3;}
+
+p {
+    
+  font-family: cdr, fantasy, sans-serif;
+  padding: 20px 40px 0 60px;
+  font-size: 50px;
+ 
+}
+
+h1, h2 {
+  text-align: center;
+  color: blueviolet;
+    padding:20px;
+}
+
+h1 {
+  font-family: Mousey, fantasy, sans-serif;
+}
+
+h2 {
+  font-family: cdr;
+}
+
+.noU{text-decoration: none;} 
+
+#PicVid{
+    margin: 0 auto;
+  width: fit-content;
+  text-align: center;
+}
+
+
+.container {
+  display: grid;
+  column-gap: 50px;
+    grid-row-gap: 50px;
+  grid-template-columns: auto auto auto;
+  background-color: dodgerblue;
+  padding: 10px;
+}
+
+.container > div {
+  background-color: #f1f1f1;
+  border: 1px solid black;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+/* Responsive Layouts */
+
+@media only screen and (max-width: 760px),
+       (min-device-width: 768px) and (max-device-width: 1024px) {
+  th {
+    color: white;
+    margin-bottom: 0;
+  }
+}
+
+@media all and (min-width: 481px),
+       all and (min-width: 769px),
+       all and (min-width: 1024px) {
+  nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 15px;
+  }
+}

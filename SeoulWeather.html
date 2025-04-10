@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Forecast (Seoul)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Temperature Forecast (Seoul)</h2>
+    <p>This code was generated with the assistance of ChatGPT, an AI language model developed by OpenAI.</p>
+
+    <ul>
+        <li><span style="color: blue;">Blue</span> for cooler temperatures (below 10°C),</li>
+        <li><span style="color: green;">Green</span> for moderate temperatures (10°C to 25°C),</li>
+        <li><span style="color: red;">Red</span> for hot temperatures (above 25°C).</li>
+    </ul>
+
+    <canvas id="weatherChart" width="400" height="200"></canvas>
+
+    <script>
+    // NWS API endpoint for Seattle as a stand-in (weather.gov does not support Seoul)
+const apiUrl = 'https://api.weather.gov/gridpoints/SEW/124,67/forecast';
+
+// Fetch data from the weather API
+fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const times = [];
+        const temperatures = [];
+        const colors = [];
+
+        // Extract and convert forecast data
+        data.properties.periods.slice(0, 7).forEach(period => {
+            times.push(formatTime(period.startTime));
+
+            // Convert F to C
+            const tempCelsius = (period.temperature - 32) * (5 / 9);
+            const roundedTemp = parseFloat(tempCelsius.toFixed(1));
+
+            temperatures.push(roundedTemp);
+            colors.push(getColorForTemperature(roundedTemp));
+        });
+
+        createBarChart(times, temperatures, colors);
+    })
+    .catch(error => console.error('Error fetching weather data:', error));
+
+// Format date
+function formatTime(isoTime) {
+    const date = new Date(isoTime);
+    return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+// Color based on Celsius
+function getColorForTemperature(tempC) {
+    if (tempC < 10) return "rgba(54, 162, 235, 0.7)";  // Blue
+    if (tempC < 25) return "rgba(75, 192, 192, 0.7)";  // Green
+    return "rgba(255, 99, 132, 0.7)";                  // Red
+}
+
+// Draw chart
+function createBarChart(times, temperatures, colors) {
+    const ctx = document.getElementById("weatherChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: times,
+            datasets: [{
+                label: "Temperature (°C)",
+                data: temperatures,
+                backgroundColor: colors,
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Temperature (°C)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        }
+    });
+}
+
+    
+    
+    </script>
+</body>
+</html>
